@@ -1,0 +1,64 @@
+[PASS] 登录获取令牌 
+[PASS] 目录对象数=10 actual=10
+[PASS] 对象 RAW-IMG-A01 字节数=2000GB 
+[PASS] 对象 ANN-A01 字节数=80GB 
+[PASS] 对象 CAL-A01 字节数=12GB 
+[PASS] 对象 MASK-A01 字节数=200GB 
+[PASS] 对象 FEAT-A01 字节数=5GB 
+[PASS] 对象 RESULT-A01 字节数=1GB 
+[PASS] 每个对象有 sha256 校验摘要 
+[PASS] RESULT-A01 完整依赖闭包=7个对象且含算法包/校准 ['ALGO-PKG-01', 'ANN-A01', 'CAL-A01', 'FEAT-A01', 'MASK-A01', 'RAW-IMG-A01', 'RESULT-A01']
+[PASS] 闭包深度：RESULT=0, FEAT=1, MASK=2, RAW=3 {'MASK-A01': 2, 'RAW-IMG-A01': 3, 'RESULT-A01': 0, 'ALGO-PKG-01': 2, 'ANN-A01': 3, 'FEAT-A01': 1, 'CAL-A01': 3}
+[PASS] 原始影像保留10年（2036-01-15） 2036-01-15
+[PASS] 标注与原始同期限10年 
+[PASS] 算法包至少保留至最后依赖结果期限届满（≥2034） 2034-02-05
+[PASS] 校准证据同样延展（≥2034） 2036-01-20
+[PASS] 派生物不早于源对象到期（MASK 截止≥RAW） 
+[PASS] 冻结传播到全部下游依赖结果 ['FEAT-B01', 'MASK-A01', 'RAW-IMG-A01', 'RESULT-A01', 'FEAT-A01']
+[PASS] 冻结对象无截止日（无限期保留） 
+[PASS] 冻结下游结果同样不可销毁 
+[PASS] 校验失败传播到 MASK/FEAT/RESULT ['FEAT-B01', 'MASK-A01', 'RESULT-A01', 'FEAT-A01', 'CAL-A01']
+[PASS] 年1次预约计划可满足 []
+[PASS] 预约提前72小时 
+[PASS] 预计恢复时间≤4小时 RTO 3.0h
+[PASS] 闭包对象数=7 
+    单次恢复：取回费=12.16 恢复计算费=4.98 合计=17.14 元
+[PASS] 72h窗口内完成全部预取 累计=13.0h
+[PASS] 分摊总额等于月账单（allocationCheck） 总额=342.255
+    月存储费：PROJ-A=305.19 PROJ-B=19.92 合计=342.25 元/月
+[PASS] PROJ-A 存储费与手工口径一致（含共享份额扣减） api=305.19 manual=305.19
+[PASS] 共享掩膜按冻结份额 30% 分摊给 PROJ-B 
+[PASS] 共享对象 MASK-A01 份额之和=1 
+[PASS] 共享对象 ALGO-PKG-01 份额之和=1 
+[PASS] 恢复计划执行成功且在RTO内 
+[PASS] 恢复对象数=7 
+[PASS] 取回费已计入月账单 24.33
+[PASS] 恢复计算费已计入月账单 9.96
+[PASS] 含取回后分摊核对仍通过 
+    年存储费（两项目合计口径）≈4312.799999999999 元；研究A单次恢复合计=17.14 元，年1次取回年成本=17.14 元
+[PASS] 年1次：按需预取路线更省 按需=17.15 恢复包=65.01
+[PASS] 月1次：恢复包路线更省（额外占用低于重复取回） 按需=205.74 恢复包=67.32
+    盈亏平衡频次≈3.83 次/年；恢复包月费=5.4 元（30GB×0.18）
+[PASS] 盈亏平衡点落在年1次与月1次之间 f*=3.83
+[PASS] 缺校准件时计划启动前标记 UNSATISFIABLE 
+[PASS] 缺件清单列出 CAL-A01 {'CAL-A01'}
+[PASS] 不可满足计划执行被阻断（HTTP 409） 409
+[PASS] 恢复包校验失败并指出校准缺件 
+[PASS] 校准恢复后恢复包校验通过 
+[PASS] 恢复包路线月频计划可满足且≤4h 
+[PASS] 缺算法包时即使哈希通过也判定不可复现 
+[PASS] 项目A退出后共享掩膜/算法包被研究B引用保护，不得整体删除 {'ALGO-PKG-01', 'MASK-A01'}
+[PASS] 项目A独占对象标记退出（RAW-IMG-A01） 
+[PASS] 研究B对象不受项目A退出影响 
+[PASS] 共享掩膜销毁检查=BLOCKED_SHARED_REFERENCE BLOCKED_SHARED_REFERENCE
+[PASS] 快照固定目录水位/依赖/费率版本 {'catalogObjects': 10, 'decisions': 20, 'rateVersion': 'RV-2026Q4', 'snapshotDate': '2026-11-25', 'snapshotId': 3, 'lineageEdges': 9, 'billingEntries': 2}
+[PASS] 快照可回放保留/冻结/迁移/退出等治理决定 {'RETENTION', 'LITIGATION_HOLD', 'LITIGATION_HOLD_RELEASED', 'CHECKSUM_FAILED', 'PROJECT_WITHDRAWN'}
+
+================ 验证汇总 ================
+通过 51 项，失败 0 项
+全部场景验证通过
+
+## 补充验证（手工 curl / 构建）
+- reviewer 账号 GET /api/catalog/objects -> 200；POST /api/retention/hold -> 403（只读角色）
+- mvn test: Tests run: 8, Failures: 0, Errors: 0
+- npm run build: 99 modules transformed, built 成功

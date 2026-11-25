@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lakegov-backend
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:127.0.0.1}:${DB_PORT:5432}/${DB_NAME:ccdev}
+    username: ${DB_USER:ccdev}
+    password: ${DB_PASSWORD:ccdev}
+    hikari:
+      maximum-pool-size: 8
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+      data-locations: classpath:db/data.sql
+      continue-on-error: false
+      encoding: UTF-8
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+lakegov:
+  demo:
+    # 演示账号（仅用于隔离开发/测试，不是生产配置）
+    admin-password: admin123
+    reviewer-password: review123
